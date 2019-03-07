@@ -34,7 +34,7 @@ parser.add_argument('--print_freq', default=10, type=int, help='print frequency'
 parser.add_argument('--resume', default='', type=str, help='path to latest checkpoint')
 parser.add_argument('--evaluate', default=False, action='store_true', help='evaluate model on validation set')
 parser.add_argument('--seed', default=None, type=int, help='seed for initializing training')
-parser.add_argument('--result', default='../result_model500', help='path to result')
+parser.add_argument('--result', default='../result_model_classification_densenet264', help='path to result')
 parser.add_argument('--aspect_ratio', default=False, action='store_true', help='keep image aspect ratio')
 parser.add_argument('--resize_image_width', default=224, type=int, help='image width')
 parser.add_argument('--resize_image_height', default=224, type=int, help='image height')
@@ -379,7 +379,7 @@ def pred(output, topk=(1,)):
 
 
 class densenet_seg(nn.Module):
-    def __init__(self, growth_rate=32, block_config=(6, 12, 24, 16),
+    def __init__(self, growth_rate=32, block_config=(6, 12, 64, 48),
                  num_init_features=64, bn_size=4, drop_rate=0, channels=3, num_classes=1000, avg_pooling_size=7):
 
         super(densenet_seg, self).__init__()
@@ -570,7 +570,7 @@ if __name__ == '__main__':
 
     # create model
     avg_pool_size = (args.avg_pooling_height, args.avg_pooling_width)
-    model = DenseNet(num_init_features=32, growth_rate=16, block_config=(6, 12, 24, 16), num_classes=args.num_classes,
+    model = DenseNet(num_init_features=32, growth_rate=16, block_config=(6, 12, 64, 48), num_classes=args.num_classes,
                      channels=args.channels, avg_pooling_size=avg_pool_size)
 
     train_transforms = transforms.Compose([transforms.RandomCrop((args.image_height, args.image_width)),

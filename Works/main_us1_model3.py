@@ -15,9 +15,9 @@ from Works.data_augmentation import *
 from Works.utils import compute_auroc, softmax, save_auroc
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
-parser.add_argument('--data', default='/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/US_kidney_original_one', help='path to dataset')
+parser.add_argument('--data', default='/home/bong6/data/US_Denoise', help='path to dataset')
 parser.add_argument('--workers', default=8, type=int, help='number of data loading workers')
-parser.add_argument('--epochs', default=200, type=int, help='number of total epochs to run')
+parser.add_argument('--epochs', default=100, type=int, help='number of total epochs to run')
 parser.add_argument('--start_epoch', default=0, type=int, help='manual epoch number')
 parser.add_argument('--batch_size', default=16, type=int, help='mini-batch size')
 parser.add_argument('--lr', default=0.001, type=float, help='initial learning rate')
@@ -27,7 +27,7 @@ parser.add_argument('--print_freq', default=10, type=int, help='print frequency'
 parser.add_argument('--resume', default='', type=str, help='path to latest checkpoint')
 parser.add_argument('--evaluate', default=False, action='store_true', help='evaluate model on validation set')
 parser.add_argument('--seed', default=None, type=int, help='seed for initializing training')
-parser.add_argument('--result', default='../result_model3', help='path to result')
+parser.add_argument('--result', default='../result_model3_center_crop_horizontally_order', help='path to result')
 parser.add_argument('--aspect_ratio', default=False, action='store_true', help='keep image aspect ratio')
 parser.add_argument('--resize_image_width', default=224, type=int, help='image width')
 parser.add_argument('--resize_image_height', default=224, type=int, help='image height')
@@ -36,7 +36,7 @@ parser.add_argument('--image_height', default=224, type=int, help='image crop he
 parser.add_argument('--avg_pooling_width', default=7, type=int, help='average pooling width')
 parser.add_argument('--avg_pooling_height', default=7, type=int, help='average pooling height')
 parser.add_argument('--channels', default=1, type=int, help='select scale type rgb or gray')
-parser.add_argument('--num_classes', default=2, type=int, help='number of classes')
+parser.add_argument('--num_classes', default=3, type=int, help='number of classes')
 parser.add_argument('--target_index', default=1, type=int, help='target index')
 parser.add_argument('--classification_result', default='', help='path to classification result')
 parser.add_argument('--preprocess_denoise', default=False, action='store_true', help='reduce noise of train/val image')
@@ -157,7 +157,7 @@ def validate_model(val_loader, model, criterion, epoch, print_freq):
                                                                     top1=top1))
 
         auc, roc = compute_auroc(target_index_output, target_index_target)
-        save_auroc(auc, roc, os.path.join(args.result, str(epoch) + '.png'))
+        # save_auroc(auc, roc, os.path.join(args.result, str(epoch) + '.png'))
 
         log(' * Prec@1 {top1.avg:.3f} at Epoch {epoch:0}'.format(top1=top1, epoch=epoch))
         log(' * auc@1 {auc:.3f}'.format(auc=auc))
@@ -201,7 +201,7 @@ def getImagesFiles(img_path):
     image_files = list()
     for (path, dir, files) in os.walk(img_path):
         for file in files:
-            ext = os.path.splitext(file)[1].lower()
+            ext = os.path.splitext(file)[1].lower()#lower 대문자를 소문자로
             if ext != '.png' and ext != '.jpg':
                 continue
             image_files.append(os.path.join(path, file))
@@ -218,7 +218,7 @@ class TrainDataset(Dataset):
         self.transform = transform
         self.target_transform = target_transform
 
-        self.CKD = 0
+        self.CKD = 2
         self.AKI = 1
         self.NOR = 0
 
@@ -289,7 +289,7 @@ class ValDataset(Dataset):
         self.transform = transform
         self.target_transform = target_transform
 
-        self.CKD = 0
+        self.CKD = 2
         self.AKI = 1
         self.NOR = 0
 

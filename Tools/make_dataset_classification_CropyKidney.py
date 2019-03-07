@@ -87,11 +87,11 @@ def main(seg_path, us_path, mask_path, kidney_list_csv, save_path, padding_size=
 
 
 if __name__ == '__main__':
-    seg_path = norm_path('~/data/SegKidney')
-    us_path = norm_path('/media/bong07/895GB/data/yonsei/png_classification/once_400+100+1200')
-    kidney_list_csv = norm_path('~/data/yonsei/doc/기기별_정제_데이터_영상/기기별 정제 영상 리스트(전체)_3차.csv')
+    seg_path = norm_path('/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/SegKidney_v3')
+    us_path = norm_path('/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/US_isangmi_400+100+1200_withExcluded/train')
+    kidney_list_csv = norm_path('/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/기기별 정제 영상 리스트(전체)_3차.csv')
     padding_size = 20
 
-    mask_path = norm_path('~/lib/robin_yonsei/results_us3_mrcnn_1200/kidney/all/SegKidney_MRCNN')
-    save_path = norm_path('~/data/KorNK/1200/CropKidney')
+    mask_path = norm_path('/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/SegMrcnn_20190108')
+    save_path = norm_path('/home/bong6/lib/robin_yonsei3/CropKidney')
     main(seg_path, us_path, mask_path, kidney_list_csv, save_path, padding_size=20, train=True)

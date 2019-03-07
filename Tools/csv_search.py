@@ -1,25 +1,33 @@
 import os
 
-DEFAULT_INIT_DATA = None
+
 
 '''
-Sample
+3가지 CSV 파일(dicom, patient, diagnosis)을 다루기 위한 제너레이터
+각 파일의 주요 키가 일치하는 항목끼리 합쳐서 장별 또는 건별로 순회가 가능 
 
+#예제
+
+# 장별 데이터 순회
 for row in csv_search.per_dicom():
     print(row)
 
+# 장별 데이터 순회(조건 입력)
 for row in csv_search.per_dicom(search={'Diagnosis': 'normal'}):
     print(row)
 
+# 특정 조건에 맞는 데이터 갯수
 print(len(list(csv_search.per_patient(search={'Date': '180718'}, include_excluded=True))))
 
+# 특정 조건에 맞는 건별, 장별 순회
 for d, l in csv_search.Per_patient_fast(search={'Date': '180718', 'Diagnosis': 'ckd'}):
     print('건당 정보', d)
     for t in l:
-        print('개별 Dicom 정보', t)
+        print('장별 Dicom 정보', t)
 
 '''
 
+DEFAULT_INIT_DATA = None
 
 def norm_path(path):
     path = os.path.normpath(path)
@@ -65,9 +73,9 @@ def read_dict(dst_dict, key):
 
 class Csv_data():
     def __init__(self,
-                 diagnosis_csv_path='~/data/yonsei/doc/진단정보/diagnosis_info_400+100+1200.csv',
-                 dicom_csv_path='~/data/yonsei/doc/Dicom정보/dicom_info_100+400.csv',
-                 patient_csv_path='~/data/yonsei/doc/환자 정보/patient_info_400+100+1200.csv'):
+                 diagnosis_csv_path='/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/doc/진단정보/diagnosis_info_400+100+1200.csv',
+                 dicom_csv_path='/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/doc/Dicom정보/dicom_info_100+400+1200.csv',
+                 patient_csv_path='/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/doc/환자 정보/patient_info_400+100+1200.csv'):
         diagnosis_csv_path = norm_path(diagnosis_csv_path)
         dicom_csv_path = norm_path(dicom_csv_path)
         patient_csv_path = norm_path(patient_csv_path)

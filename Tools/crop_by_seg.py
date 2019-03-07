@@ -14,7 +14,7 @@ if save_crop_seg_image and not os.path.isdir(save_crop_seg_path):
 padding_size = 20
 seg_padding_size = 0
 equal_histogram = False
-do_preprocess = False
+do_preprocess = True
 do_seg = False
 
 # create CLAHE
@@ -108,10 +108,13 @@ def main(image_path, seg_path, output_path):
 
 def calculate_angle(img):
     ret, thresh = cv2.threshold(img, 127, 255, 0)
+    #Contours: 동일한 색 또는 동일한 강도를 가지고 있는 영역의 경계선을 연결한 선입니다. 우리가 자주 보는 것으로는 등고선이나 일기예보에서 볼 수 있습니다.
+    #threshold: 임계값보다 크면 백, 작으면 흑이 됩니다. 기본 임계처리는 사용자가 고정된 임계값을 결정하고 그 결과를 보여주는 단순한 형태입니다.
     _, contours, hierarchy = cv2.findContours(thresh, 1, 2)
     cnt = contours[0]
 
     rows, cols = img.shape[:2]
+    #fitline은 countor에 최적화된 직선을 추출한다
     [vx, vy, x, y] = cv2.fitLine(cnt, cv2.DIST_L2, 0, 0.01, 0.01)
     lefty = int((-x * vy / vx) + y)
     righty = int(((cols - x) * vy / vx) + y)
@@ -242,26 +245,26 @@ def preproess_image(img, seg_image):
 
 
 if __name__ == '__main__':
-    main(image_path='~/data/180718_KidneyUS_400_png/aki',
-         seg_path='~/data/180718_KidneyUS_400_png_seg',
-         output_path='~/data/CropKidney/train/normal')
+    main(image_path='/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/US_isangmi_400+100+1200_withExcluded/val/AKI',
+         seg_path='/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/SegKidney_v3',
+         output_path='~/data/CropKidney/AKI')
 
-    main(image_path='~/data/180718_KidneyUS_400_png/ckd',
-         seg_path='~/data/180718_KidneyUS_400_png_seg',
-         output_path='~/data/CropKidney/train/ckd')
+    main(image_path='/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/US_isangmi_400+100+1200_withExcluded/val/CKD',
+         seg_path='/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/SegKidney_v3',
+         output_path='~/data/CropKidney/CKD')
 
-    main(image_path='~/data/180718_KidneyUS_400_png/normal',
-         seg_path='~/data/180718_KidneyUS_400_png_seg',
-         output_path='~/data/CropKidney/train/normal')
+    main(image_path='/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/US_isangmi_400+100+1200_withExcluded/val/normal',
+         seg_path='/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/SegKidney_v3',
+         output_path='~/data/CropKidney/normal')
 
-    main(image_path='~/data/180725_KidneyUS_100_png/aki',
-         seg_path='~/data/180725_KidneyUS_100_png_seg',
-         output_path='~/data/CropKidney/val/normal')
-
-    main(image_path='~/data/180725_KidneyUS_100_png/ckd',
-         seg_path='~/data/180725_KidneyUS_100_png_seg',
-         output_path='~/data/CropKidney/val/ckd')
-
-    main(image_path='~/data/180725_KidneyUS_100_png/normal',
-         seg_path='~/data/180725_KidneyUS_100_png_seg',
-         output_path='~/data/CropKidney/val/normal')
+    # main(image_path='~/data/180725_KidneyUS_100_png/aki',
+    #      seg_path='~/data/180725_KidneyUS_100_png_seg',
+    #      output_path='~/data/CropKidney/val/normal')
+    #
+    # main(image_path='~/data/180725_KidneyUS_100_png/ckd',
+    #      seg_path='~/data/180725_KidneyUS_100_png_seg',
+    #      output_path='~/data/CropKidney/val/ckd')
+    #
+    # main(image_path='~/data/180725_KidneyUS_100_png/normal',
+    #      seg_path='~/data/180725_KidneyUS_100_png_seg',
+    #      output_path='~/data/CropKidney/val/normal')

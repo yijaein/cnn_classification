@@ -18,9 +18,9 @@ from Works.data_augmentation import *
 from Works.utils import compute_auroc, softmax
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
-parser.add_argument('--data', default='~/data/KorNK/1200/CropKidneyShapeWithColor', help='path to dataset')
+parser.add_argument('--data', default='/home/bong6/data/CropKidneyColor', help='path to dataset')
 parser.add_argument('--workers', default=8, type=int, help='number of data loading workers')
-parser.add_argument('--epochs', default=150, type=int, help='number of total epochs to run')
+parser.add_argument('--epochs', default=100, type=int, help='number of total epochs to run')
 parser.add_argument('--start_epoch', default=0, type=int, help='manual epoch number')
 parser.add_argument('--batch_size', default=16, type=int, help='mini-batch size')
 parser.add_argument('--lr', default=0.001, type=float, help='initial learning rate')
@@ -28,8 +28,8 @@ parser.add_argument('--epoch_decay', default=40, type=int, help='learning rate d
 parser.add_argument('--weight_decay', default=0, type=float, help='weight decay')
 parser.add_argument('--print_freq', default=10, type=int, help='print frequency')
 parser.add_argument('--pretrained', default=False, action='store_true', help='use pretrained model')
-parser.add_argument('--resume', default='/media/bong07/895GB/data/yonsei/model/M2_classification_kidney/result_CropKidneyShapeWithColor/checkpoint_70.pth', type=str, help='path to latest checkpoint')
-parser.add_argument('--evaluate', default=True, action='store_true', help='evaluate model on validation set')
+parser.add_argument('--resume', default='', type=str, help='path to latest checkpoint')
+parser.add_argument('--evaluate', default=False, action='store_true', help='evaluate model on validation set')
 parser.add_argument('--seed', default=None, type=int, help='seed for initializing training')
 parser.add_argument('--result', default='../result_KorNK_1200/result_CropKidneyShapeWithColor', help='path to result')
 parser.add_argument('--aspect_ratio', default=False, action='store_true', help='keep image aspect ratio')

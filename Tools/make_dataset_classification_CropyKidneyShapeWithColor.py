@@ -35,24 +35,36 @@ def file_dict(path):
     return d
 
 
-def main(seg_path, us_path, mask_path, kidney_list_csv, save_path, padding_size=20, train=True):
-    seg_path = norm_path(seg_path)
+def main(us_path, mask_path, save_path, padding_size=20, train=True):
     us_path = norm_path(us_path)
     mask_path = norm_path(mask_path)
     save_path = norm_path(save_path)
-    kidney_list_csv = norm_path(kidney_list_csv)
+
 
     if not os.path.exists(save_path):
-        os.makedirs(os.path.join(save_path, 'kidney'))
-        os.makedirs(os.path.join(save_path, 'non-kidney'))
+        os.makedirs(os.path.join(save_path, 'normal'))
+        os.makedirs(os.path.join(save_path, 'AKI'))
+        os.makedirs(os.path.join(save_path, 'CKD'))
 
-    seg_name = file_dict(seg_path)
     us_name = file_dict(us_path)
     mask_name = file_dict(mask_path)
-    kidney_set = kidney_file_set(kidney_list_csv)
+
+
 
     for name_order in tqdm(mask_name.keys()):
-        name, order = name_order.split('#')
+        print('name_order:', name_order)
+        if '#' in name_order:
+            name, order = name_order.split('#')
+            print('name:', name)
+            print('order:', order)
+        else:
+            name = name_order
+            continue
+            print('no has: #')
+
+
+
+
 
         mask_img = cv2.imread(mask_name[name_order], cv2.IMREAD_GRAYSCALE)
         us_img = cv2.imread(us_name[name], cv2.IMREAD_GRAYSCALE)
@@ -98,12 +110,11 @@ def main(seg_path, us_path, mask_path, kidney_list_csv, save_path, padding_size=
 
 
 if __name__ == '__main__':
-    seg_path = norm_path('~/data/SegKidney')
-    us_path = norm_path('/media/bong07/895GB/data/yonsei/png_classification/once_400+100+1200')
-    kidney_list_csv = norm_path('~/data/yonsei/doc/기기별_정제_데이터_영상/기기별 정제 영상 리스트(전체)_3차.csv')
+    us_path = norm_path('/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/US_isangmi_400+100+1200_withExcluded')
+    kidney_list_csv = norm_path('/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/기기별 정제 영상 리스트(전체)_3차.csv')
     padding_size = 20
 
     mask_path = norm_path(
-        '~/lib/robin_yonsei/results_us3_mrcnn_1200/kidney/all/SegKidney_MRCNN')
-    save_path = norm_path('~/data/KorNK/1200/CropKidneyShapeWithColor')
-    main(seg_path, us_path, mask_path, kidney_list_csv, save_path, padding_size=20, train=True)
+        '/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/results_us3_mrcnn_all/all/segKidney_MRCNN_ALL')
+    save_path = norm_path('~/data/KorNK/1200/CropKidneyShapeWithColor1')
+    main(us_path, mask_path, kidney_list_csv, save_path, padding_size=20, train=True)

@@ -19,7 +19,7 @@ from unet import UNet
 
 os.environ['CUDA_DEVICE_ORDER'] = 'PCI_BUS_ID'
 os.environ['CUDA_VISIBLE_DEVICES'] = '0,1'
-GPU_IDS = [0, 1]
+GPU_IDS = [1]
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 parser.add_argument('--data', default='/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/US_isangmi_400+100+1200_withExcluded', help='path to dataset')
@@ -34,7 +34,7 @@ parser.add_argument('--print_freq', default=10, type=int, help='print frequency'
 parser.add_argument('--resume', default='', type=str, help='path to latest checkpoint')
 parser.add_argument('--evaluate', default=False, action='store_true', help='evaluate model on validation set')
 parser.add_argument('--seed', default=None, type=int, help='seed for initializing training')
-parser.add_argument('--result', default='../result_unet', help='path to result')
+parser.add_argument('--result', default='../result_Densenet264', help='path to result')
 parser.add_argument('--aspect_ratio', default=True, action='store_true', help='keep image aspect ratio')
 parser.add_argument('--resize_image_width', default=512, type=int, help='image width')
 parser.add_argument('--resize_image_height', default=512, type=int, help='image height')
@@ -45,7 +45,7 @@ parser.add_argument('--avg_pooling_height', default=32, type=int, help='average 
 parser.add_argument('--channels', default=1, type=int, help='select scale type rgb or gray')
 parser.add_argument('--num_classes', default=2, type=int, help='number of classes')
 parser.add_argument('--seg_data', default='/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/SegKidney_v3', help='path for segmentation dataset')
-parser.add_argument('--seg_result', default='/home/bong6/lib/robin_yonsei3/result_us1_model1/unet', help='path for segmentation result')
+parser.add_argument('--seg_result', default='/home/bong6/lib/robin_yonsei3/result_us1_model1/Densenet264', help='path for segmentation result')
 parser.add_argument('--post_processing', default=False, action='store_true', help='do post-processing seg result')
 parser.add_argument('--seg_only_kidney', default=False, action='store_true', help='segment only kidney dataset')
 parser.add_argument('--unet', default=False, action='store_true',help="enable unet")
@@ -209,7 +209,7 @@ class TrainSegDataset(SegDataset):
         return sample, target, seg_sample, path
 
 class densenet_seg(nn.Module):
-    def __init__(self, growth_rate=32, block_config=(6, 12, 24, 16),
+    def __init__(self, growth_rate=32, block_config=(6, 12, 64, 48),
                  num_init_features=64, bn_size=4, drop_rate=0, channels=3, num_classes=1000, avg_pooling_size=7):
 
         super(densenet_seg, self).__init__()
@@ -422,7 +422,7 @@ if __name__ == '__main__':
         model = UNet(n_channels=args.channels, n_classes=1)
 
     else:
-        model = densenet_seg(num_init_features=32, growth_rate=16, block_config=(6, 12, 24, 16),
+        model = densenet_seg(num_init_features=32, growth_rate=16, block_config=(6, 12, 64, 48),
                          num_classes=args.num_classes, channels=args.channels, avg_pooling_size=avg_pool_size)
 
     train_transforms = transforms.Compose([transforms.ToTensor(), normalize])

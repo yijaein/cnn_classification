@@ -31,15 +31,15 @@ def main():
     # setting
     src_path = norm_path('/home/bong07/data/CropKidney_made_Machine_isangmi_top2/val')
     # src_path = norm_path('/home/bong07/data/yonsei/doc/기기별_정제_데이터_영상/CropKidney_isangmi_only100400')
-    seg_path = norm_path('/home/bong07/data/SegKidney')
+    seg_path = norm_path('/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/SegKidney_v3')
     size_px = 300
     size_cm = 15
     save_csv = norm_path('~/data/yonsei/debug_kidney_size.csv')
 
 
     #fix
-    diagnosis_csv = norm_path('~/data/yonsei/doc/진단정보/diagnosis_info_all(400+100+1200).csv')
-    dicom_info_csv = norm_path('~/data/yonsei/doc/Dicom정보/dicom_info_100_400.csv')
+    diagnosis_csv = norm_path('/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/doc/진단정보/diagnosis_info_400+100+1200.csv')
+    dicom_info_csv = norm_path('/media/bong6/602b5e26-f5c0-421c-b8a5-08c89cd4d4e6/data/yonsei2/dataset/doc/Dicom정보/dicom_info_100+400+1200.csv')
 
 
     src_dict = name_dict(src_path)
